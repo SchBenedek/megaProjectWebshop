@@ -1,13 +1,7 @@
 import { useState, useEffect } from "react";
-
-interface Product{
-    id: number;
-    event: string;
-    type: string;
-    price: number;
-    availability: boolean;
-    seat: string;
-}
+import { Product } from "../../lib/types";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import NavBar from "../Navbar/Navbar";
 
 export default function Products(){
     const [products, setProducts] = useState<Product[]>([]);
@@ -23,7 +17,7 @@ export default function Products(){
         setLoading(true);
         setError(null);
 
-        fetch(`http://localhost:3000/products`)
+        fetch(`http://localhost:3000/megapropjectwebshop`)
         .then((response) => {
             if (response.status === 404) {
                 setErrorServer('A kért erőforrás nem található (404)!');
@@ -42,64 +36,6 @@ export default function Products(){
         })
     }
 
-    const sortPoducts=(key: keyof Product, direction: "asc" | "desc")=>{
-        const sortedProducts=[...filterProducts].sort((a, b)=>{
-            if(a[key]<b[key]){
-                return direction==="asc" ? -1 : 1;
-            }
-            if(a[key]>b[key]){
-                return direction==="asc" ? 1 : -1;
-            }
-            return 0;
-        });
-        setFilterProducts(sortedProducts);
-        setSortConfig({key, direction});
-    };
-
-    const handleSearch=(event: React.ChangeEvent<HTMLInputElement>)=>{
-        const term=event.target.value.toLowerCase();
-        setSearchTerm(term);
-        const filtered = products.filter((product) => {
-
-            if (elerheto && !product.availability) {
-                return false;
-            }
-
-            const availabilityText = product.availability ? "available" : "unavailable";
-    
-            return (
-                product.event.toLowerCase().includes(term) ||
-                product.type.toLowerCase().includes(term) ||
-                product.price.toString().toLowerCase().includes(term) ||
-                availabilityText.includes(term) ||
-                product.seat.toString().includes(term)
-            );
-        });
-    
-        setFilterProducts(filtered);
-    }
-
-    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setElerheto(event.target.checked);
-        const term = searchTerm.toLowerCase();
-        const filtered = products.filter((product) => {
-            if (event.target.checked && !product.availability) {
-                return false;
-            }
-    
-            const availabilityText = product.availability ? "available" : "unavailable";
-    
-            return (
-                product.event.toLowerCase().includes(term) ||
-                product.type.toLowerCase().includes(term) ||
-                product.price.toString().toLowerCase().includes(term) ||
-                availabilityText.includes(term) ||
-                product.seat.toString().includes(term)
-            );
-        });
-    
-        setFilterProducts(filtered);
-    };
 
     if (errorServer) {
         return <p>{errorServer}</p>
@@ -112,6 +48,7 @@ export default function Products(){
     }
 
     return<>
+    <NavBar fetchResult={[]} searchTerm={""}/>
         <main>
 
         </main>

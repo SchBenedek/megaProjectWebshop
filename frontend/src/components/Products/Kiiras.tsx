@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Product } from "../../lib/types";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import NavBar from "../Navbar/Navbar";
+import { sortProducts } from "../../lib/utils";
 
 export default function Products(){
     const [products, setProducts] = useState<Product[]>([]);
@@ -17,7 +18,7 @@ export default function Products(){
         setLoading(true);
         setError(null);
 
-        fetch(`http://localhost:3000/megapropjectwebshop`)
+        fetch(`http://localhost:3000/products`)
         .then((response) => {
             if (response.status === 404) {
                 setErrorServer('A kért erőforrás nem található (404)!');
@@ -29,6 +30,7 @@ export default function Products(){
         })
         .then((data)=>{
             setProducts(data)
+            setFilterProducts(data)
             setLoading(false);
         })
         .catch((error)=>{
@@ -36,6 +38,9 @@ export default function Products(){
         })
     }
 
+    useEffect(() => {
+        fetchProducts();
+    }, []);
 
     if (errorServer) {
         return <p>{errorServer}</p>
@@ -48,10 +53,34 @@ export default function Products(){
     }
 
     return<>
-    <NavBar fetchResult={[]} searchTerm={""}/>
-        <main>
-
-        </main>
+        <NavBar products={products}
+                filterProducts={filterProducts}
+                setFilterProducts={setFilterProducts}
+                searchTerm={""} />
+        <p></p>
+        <main className="container">
+            <div className="row">
+                    {filterProducts.map((product) => (
+                        <div className="col-md-6 col-lg-4 mb-4" key={product.id}>
+                            <div className="card shadow-sm h-100">
+                                <div className="card-body">
+                                    <h5 className="card-title font-weight-bold text-warning">
+                                        {product.event}
+                                    </h5>
+                                    <p className="card-text text-muted">
+                                        <strong>Típus:</strong> {product.type}<br />
+                                        <strong>Ár:</strong> {product.price*100} Ft<br />
+                                        <strong>Ülőhely:</strong> {product.seat}<br />
+                                        <span style={{ color: product.availability ? 'green' : 'red' }}>
+                                            <strong>{product.availability ? "Elérhető" : "Elfogyott"}</strong>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </main>
         <footer>
 
         </footer>

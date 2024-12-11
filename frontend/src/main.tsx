@@ -6,6 +6,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Kiiras from './components/Products/Kiiras';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const router = createBrowserRouter([
   {

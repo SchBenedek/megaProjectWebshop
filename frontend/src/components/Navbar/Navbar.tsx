@@ -47,7 +47,7 @@ export default function NavBar({
 
     const toggleAvailability = () => {
         setElerheto((prev) => !prev);
-        const filtered = filterProducts.filter((p) => (elerheto ? true : p.availability));
+        const filtered = products.filter((p) => (elerheto ? true : p.availability));
         setFilterProducts(filtered);
     };
 
@@ -57,7 +57,7 @@ export default function NavBar({
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item">
-                            <a className="nav-link text-warning" href="/">Kezdőlap</a>
+                            <strong><a className="nav-link text-warning" href="/">Kezdőlap</a></strong>
                         </li>
                         <li className="nav-item dropdown">
                             <a
@@ -110,7 +110,7 @@ export default function NavBar({
                             </ul>
                         </li>
                     </ul>
-                    <div className="form-check form-switch">
+                    <div className="form-check form-switch ms-auto">
                         <input
                             className="form-check-input"
                             type="checkbox"

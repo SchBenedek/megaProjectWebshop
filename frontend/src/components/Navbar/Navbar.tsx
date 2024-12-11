@@ -21,7 +21,6 @@ export default function NavBar({
         direction: "asc" | "desc";
     }>({ key: null, direction: "asc" });
 
-    // Toggle sorting direction or set new sort key
     const handleSort = (key: keyof Product) => {
         let direction: "asc" | "desc" = "asc";
 
@@ -34,7 +33,6 @@ export default function NavBar({
         setSortConfig({ key, direction });
     };
 
-    // Handle searching
     const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
@@ -42,12 +40,11 @@ export default function NavBar({
         const filtered = handleSearch(
             e,
             term,
-            filterProducts // Original list to search
+            filterProducts
         );
         setFilterProducts(filtered);
     };
 
-    // Handle availability filter
     const toggleAvailability = () => {
         setElerheto((prev) => !prev);
         const filtered = filterProducts.filter((p) => (elerheto ? true : p.availability));

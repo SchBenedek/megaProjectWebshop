@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Product } from "../../lib/types";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Card(){
     const [product, setProduct]=useState<Product>();
@@ -8,6 +8,7 @@ export default function Card(){
     const [error, setError] = useState(null);
     const [errorServer, setErrorServer]=useState<string>();
     let { id } = useParams();
+    const navigate = useNavigate();
 
     const fetchProduct=(id:number)=>{
         setLoading(true);
@@ -33,12 +34,20 @@ export default function Card(){
     }
 
     useEffect(() => {
-        fetchProduct(parseInt(id));
-    }, []);
+        if (id) fetchProduct(parseInt(id));
+    }, [id]);
+
+    const handleExit=()=>{
+        navigate(`/`);
+    }
 
     return<>
-        <main className="container p-4 bg-warning text-dark rounded">
+        <main className="container p-1 bg-warning text-dark rounded">
             <div className="card shadow-lg border-0">
+                <button 
+                    className="btn-close position-absolute top-0 end-0 m-2" 
+                    onClick={handleExit}>
+                </button>
                 <div className="card-body">
                     <h1 className="card-title text-center mb-4">{product?.event}</h1>
                     <hr />
@@ -56,7 +65,7 @@ export default function Card(){
                         {product?.availability ? "Elérhető" : "Elfogyott"}
                     </p>
                     <div className="text-center mt-4">
-                        <button className={`btn ${product?.availability ? 'btn-primary' : 'btn-secondary'} px-4 py-2`}
+                        <button className={`btn ${product?.availability ? 'btn-warning' : 'btn-secondary'} px-4 py-2`}
                             disabled={!product?.availability}>
                             Vásárlás
                         </button>

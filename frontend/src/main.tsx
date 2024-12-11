@@ -8,12 +8,17 @@ import {
 import Kiiras from './components/Products/Kiiras';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import Card from './components/Products/Card';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Kiiras />,
   },
+  {
+    path:"/products/:id",
+    element: <Card />
+  }
 ]);
 
 createRoot(document.getElementById('root')!).render(

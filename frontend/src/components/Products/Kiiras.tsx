@@ -3,6 +3,9 @@ import { Product } from "../../lib/types";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import NavBar from "../Navbar/Navbar";
 import { sortProducts } from "../../lib/utils";
+import Card from "./Card";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Products(){
     const [products, setProducts] = useState<Product[]>([]);
@@ -13,6 +16,8 @@ export default function Products(){
     const [searchTerm, setSearchTerm]=useState("");
     const [sortConfig, setSortConfig] = useState<{ key: keyof Product, direction: "asc" | "desc" } | null>(null);
     const [elerheto, setElerheto]=useState<boolean>(false);
+    const navigate = useNavigate();
+
     
     const fetchProducts=()=>{
         setLoading(true);
@@ -42,6 +47,10 @@ export default function Products(){
         fetchProducts();
     }, []);
 
+    const handleClick = (id:number) => {
+        navigate(`/products/${products[id].id}`);
+      };
+
     if (errorServer) {
         return <p>{errorServer}</p>
     }
@@ -61,7 +70,7 @@ export default function Products(){
         <main className="container">
             <div className="row">
                     {filterProducts.map((product) => (
-                        <div className="col-md-6 col-lg-4 mb-4" key={product.id}>
+                        <div className="col-md-6 col-lg-4 mb-4" key={product.id} onClick={()=>{handleClick(product.id-1)}}>
                             <div className="card shadow-sm h-100">
                                 <div className="card-body">
                                     <h5 className="card-title font-weight-bold text-warning">

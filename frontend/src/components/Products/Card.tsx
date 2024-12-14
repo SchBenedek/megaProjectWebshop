@@ -38,7 +38,7 @@ export default function Card(){
     }, [id]);
 
     const handleExit=()=>{
-        navigate(`/`);
+        navigate(`/kiiras`);
     }
 
     return<>

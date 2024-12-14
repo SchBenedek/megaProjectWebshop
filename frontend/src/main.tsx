@@ -9,15 +9,25 @@ import Kiiras from './components/Products/Kiiras';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Card from './components/Products/Card';
+import Kezdolap from './components/Kezdolap/Kezdolap';
+import Feltetelek from './components/Kezdolap/Feltetelek';
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Kezdolap />,
+  },
+  {
+    path: "/kiiras",
     element: <Kiiras />,
   },
   {
     path:"/products/:id",
     element: <Card />
+  },
+  {
+    path:"/feltetelek",
+    element: <Feltetelek />
   }
 ]);
 

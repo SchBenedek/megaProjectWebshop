@@ -59,6 +59,9 @@ export default function NavBar({
                         <li className="nav-item">
                             <strong><a className="nav-link text-warning" href="/">Kezdőlap</a></strong>
                         </li>
+                        <li className="nav-item">
+                            <a className="nav-link text-warning" href="/kiiras">Jegyek</a>
+                        </li>
                         <li className="nav-item dropdown">
                             <a
                                 className="nav-link dropdown-toggle text-warning"

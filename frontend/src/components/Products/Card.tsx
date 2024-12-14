@@ -41,6 +41,17 @@ export default function Card(){
         navigate(`/kiiras`);
     }
 
+    if (errorServer) {
+        return <p>{errorServer}</p>
+    }
+    if (loading) {
+        return <p>Loading...</p>
+    }
+    if (error) {
+        return <p>Hiba történt: {error}.</p>
+    }
+
+
     return<>
         <main className="container p-1 bg-warning text-dark rounded">
             <div className="card shadow-lg border-0">

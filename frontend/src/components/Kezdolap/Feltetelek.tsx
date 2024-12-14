@@ -1,6 +1,19 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Feltetelek() {
+  
+    const navigate = useNavigate();
+
+    const handleExit=()=>{
+      navigate(`/`);
+    }
+
     return (
       <main className="p-4">
+        <button 
+          className="btn-close position-absolute top-0 end-0 m-2" 
+          onClick={handleExit}>
+        </button>
         <h1>Mire vonatkoznak ezek a feltételek?</h1>
         <p>
           Tudjuk, hogy csábító kihagyni a jelen Általános Szerződési Feltételeket, de fontos tisztázni, hogy Ön mit várhat el tőlünk a Google szolgáltatásainak használata során, illetve hogy mi mit várunk el Öntől.

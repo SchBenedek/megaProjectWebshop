@@ -36,7 +36,7 @@ export default function Profiles(){
         setLoading(true);
         setError(null);
 
-    fetch(`http://localhost:3000/login`, {
+    fetch(`http://localhost:3000/profiles`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

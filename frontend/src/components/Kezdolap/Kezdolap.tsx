@@ -7,32 +7,42 @@ export default function Kezdolap() {
     const [registerError, setRegisterError] = useState<string | null>(null);
     const [registerSuccess, setRegisterSuccess] = useState<string | null>(null);
     const [loginError, setLoginError] = useState<string | null>(null); 
+    const [isLoggedIn, SetIsLoggedIn]=useState(false);
 
     const handleLogin = async (email: string, password: string) => {
       setLoginError(null);
-  
+    
       try {
         const response = await fetch("http://localhost:3000/profiles", {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password }),
         });
-  
+    
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Hibás email vagy jelszó!");
+          throw new Error("A szerver nem érhető el!");
         }
-  
-        const data = await response.json();
-        console.log("Login successful:", data);
-  
+    
+        const profiles = await response.json();
+    
+        const user = profiles.find((profile: any) => profile.email === email);
+    
+        if (!user) {
+          throw new Error("Az email nem található a rendszerben!");
+        }
+    
+        if (user.password !== password) {
+          throw new Error("Hibás jelszó!");
+        }
+    
+        console.log("Login successful:", user);
         alert("Sikeres bejelentkezés!");
       } catch (error: any) {
         setLoginError(error.message);
       }
     };
+    
 
   const handleRegister = async (
     name: string,
@@ -49,7 +59,7 @@ export default function Kezdolap() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/profles", {
+      const response = await fetch("http://localhost:3000/profiles", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

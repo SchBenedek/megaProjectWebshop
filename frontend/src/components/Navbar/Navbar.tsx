@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import { Product } from "../../lib/types";
 import { sortProducts, handleSearch } from "../../lib/utils";
+import { Link } from "react-router-dom";
 
 interface NavBarProps {
     products: Product[];
     filterProducts: Product[];
     setFilterProducts: (products: Product[]) => void;
-    searchTerm: string;
+    searchTerm:string;
+    isLoggedIn: boolean;
 }
 
 export default function NavBar({
     products,
     filterProducts,
     setFilterProducts,
+    isLoggedIn,
 }: NavBarProps) {
     const [searchTerm, setSearchTerm] = useState("");
     const [elerheto, setElerheto] = useState(false);
@@ -23,11 +26,9 @@ export default function NavBar({
 
     const handleSort = (key: keyof Product) => {
         let direction: "asc" | "desc" = "asc";
-
         if (sortConfig.key === key && sortConfig.direction === "asc") {
             direction = "desc";
         }
-
         const { sortedProducts } = sortProducts(key, direction, filterProducts);
         setFilterProducts(sortedProducts);
         setSortConfig({ key, direction });
@@ -37,11 +38,7 @@ export default function NavBar({
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
 
-        const filtered = handleSearch(
-            e,
-            term,
-            filterProducts
-        );
+        const filtered = handleSearch(e, term, filterProducts);
         setFilterProducts(filtered);
     };
 
@@ -75,38 +72,22 @@ export default function NavBar({
                             </a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <a
-                                        className="dropdown-item"
-                                        href="#"
-                                        onClick={() => handleSort("event")}
-                                    >
+                                    <a className="dropdown-item" href="#" onClick={() => handleSort("event")}>
                                         Esemény
                                     </a>
                                 </li>
                                 <li>
-                                    <a
-                                        className="dropdown-item"
-                                        href="#"
-                                        onClick={() => handleSort("type")}
-                                    >
+                                    <a className="dropdown-item" href="#" onClick={() => handleSort("type")}>
                                         Típus
                                     </a>
                                 </li>
                                 <li>
-                                    <a
-                                        className="dropdown-item"
-                                        href="#"
-                                        onClick={() => handleSort("price")}
-                                    >
+                                    <a className="dropdown-item" href="#" onClick={() => handleSort("price")}>
                                         Ár
                                     </a>
                                 </li>
                                 <li>
-                                    <a
-                                        className="dropdown-item"
-                                        href="#"
-                                        onClick={() => handleSort("seat")}
-                                    >
+                                    <a className="dropdown-item" href="#" onClick={() => handleSort("seat")}>
                                         Ülőhely
                                     </a>
                                 </li>
@@ -121,10 +102,7 @@ export default function NavBar({
                             onChange={toggleAvailability}
                             checked={elerheto}
                         />
-                        <label
-                            className="form-check-label text-warning"
-                            htmlFor="availableCheckbox"
-                        >
+                        <label className="form-check-label text-warning" htmlFor="availableCheckbox">
                             Csak elérhető
                         </label>
                     </div>
@@ -137,6 +115,11 @@ export default function NavBar({
                             placeholder="Keresés..."
                         />
                     </form>
+                    {isLoggedIn && (
+                        <Link to="/cart" className="nav-link ms-3">
+                            <i className="bi bi-cart text-warning fs-5"></i> {/* Bootstrap cart icon */}
+                        </Link>
+                    )}
                 </div>
             </nav>
         </header>

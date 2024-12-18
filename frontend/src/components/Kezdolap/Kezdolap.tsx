@@ -7,7 +7,8 @@ export default function Kezdolap() {
     const [registerError, setRegisterError] = useState<string | null>(null);
     const [registerSuccess, setRegisterSuccess] = useState<string | null>(null);
     const [loginError, setLoginError] = useState<string | null>(null); 
-    const [isLoggedIn, SetIsLoggedIn]=useState(false);
+    const [isLoggedIn, setIsLoggedIn]=useState<boolean>(false);
+    const [loginData, setLoginData]=useState<string[]>();
 
     const handleLogin = async (email: string, password: string) => {
       setLoginError(null);
@@ -36,8 +37,10 @@ export default function Kezdolap() {
           throw new Error("Hibás jelszó!");
         }
     
+        setLoginData(user);
         console.log("Login successful:", user);
-        alert("Sikeres bejelentkezés!");
+        setIsLoggedIn(true);
+        setLoginError("Sikeres bejelentkezés!");
       } catch (error: any) {
         setLoginError(error.message);
       }
@@ -85,7 +88,7 @@ export default function Kezdolap() {
         filterProducts={[]}
         setFilterProducts={() => []}
         searchTerm={""}
-        isLoggedIn={true}
+        isLoggedIn={isLoggedIn}
       />
       <main className="container text-dark">
         <hr />
@@ -105,6 +108,7 @@ export default function Kezdolap() {
                 <div className="row justify-content-center">
                   <div className="col-md-10 col-lg-6 col-xl-5">
                     <LoginForm onSubmit={handleLogin} />
+                    <p>{loginError}</p>
                   </div>
                   <div className="col-md-10 col-lg-6 col-xl-4 d-flex align-items-center">
                     <img
@@ -129,6 +133,7 @@ export default function Kezdolap() {
                   </div>
                   <div className="col-md-10 col-lg-6 col-xl-5">
                     <RegisterForm onSubmit={handleRegister} />
+                    <p>{registerSuccess}</p>
                   </div>
                 </div>
               </div>

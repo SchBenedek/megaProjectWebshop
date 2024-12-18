@@ -65,7 +65,8 @@ export default function Products(){
         <NavBar products={products}
                 filterProducts={filterProducts}
                 setFilterProducts={setFilterProducts}
-                searchTerm={""} />
+                searchTerm={""} 
+                isLoggedIn={true}/>
         <p></p>
         <main className="container">
             <div className="row">

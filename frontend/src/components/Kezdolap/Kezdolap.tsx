@@ -85,6 +85,7 @@ export default function Kezdolap() {
         filterProducts={[]}
         setFilterProducts={() => []}
         searchTerm={""}
+        isLoggedIn={true}
       />
       <main className="container text-dark">
         <hr />

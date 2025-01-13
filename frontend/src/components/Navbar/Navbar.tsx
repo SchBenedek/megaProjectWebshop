@@ -18,7 +18,6 @@ export default function NavBar({
     isLoggedIn,
 }: NavBarProps) {
     const [searchTerm, setSearchTerm] = useState("");
-    const [elerheto, setElerheto] = useState(false);
     const [sortConfig, setSortConfig] = useState<{
         key: keyof Product | null;
         direction: "asc" | "desc";
@@ -39,12 +38,6 @@ export default function NavBar({
         setSearchTerm(term);
 
         const filtered = handleSearch(e, term, filterProducts);
-        setFilterProducts(filtered);
-    };
-
-    const toggleAvailability = () => {
-        setElerheto((prev) => !prev);
-        const filtered = products.filter((p) => (elerheto ? true : p.availability));
         setFilterProducts(filtered);
     };
 
@@ -94,18 +87,6 @@ export default function NavBar({
                             </ul>
                         </li>
                     </ul>
-                    <div className="form-check form-switch ms-auto">
-                        <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id="availableCheckbox"
-                            onChange={toggleAvailability}
-                            checked={elerheto}
-                        />
-                        <label className="form-check-label text-warning" htmlFor="availableCheckbox">
-                            Csak elérhető
-                        </label>
-                    </div>
                     <form className="d-flex ms-auto">
                         <input
                             className="form-control me-2"

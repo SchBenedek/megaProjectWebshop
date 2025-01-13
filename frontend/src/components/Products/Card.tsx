@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { Product } from "../../lib/types";
 import { useNavigate, useParams } from "react-router-dom";
 import NavBar from "../Navbar/Navbar";
+import { useAuth } from "../../lib/AuthContext";
+
 
 export default function Card(){
     const [product, setProduct]=useState<Product>();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [errorServer, setErrorServer]=useState<string>();
-    const [loggedIn, setLoggedIn]=useState(false);
+    const { isLoggedIn } = useAuth();
     let { id } = useParams();
     const navigate = useNavigate();
 
@@ -79,7 +81,7 @@ export default function Card(){
                     </p>
                     <div className="text-center mt-4">
                         <button className={`btn ${product?.availability ? 'btn-warning' : 'btn-secondary'} px-4 py-2`}
-                            disabled={!product?.availability||!loggedIn}>
+                            disabled={!product?.availability||!isLoggedIn}>
                             Vásárlás
                         </button>
                     </div>

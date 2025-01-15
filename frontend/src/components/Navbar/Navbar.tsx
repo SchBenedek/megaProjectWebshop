@@ -3,6 +3,8 @@ import { Product } from "../../lib/types";
 import { sortProducts } from "../../lib/utils";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../lib/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 interface NavBarProps {
   products: Product[];
@@ -15,6 +17,8 @@ export const NavBar = ({ products, setFilterProducts }: NavBarProps) => {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState<{ key: keyof Product; direction: "asc" | "desc" } | null>(null);
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -41,6 +45,10 @@ export const NavBar = ({ products, setFilterProducts }: NavBarProps) => {
     const { sortedProducts } = sortProducts(key, direction, products);
     setFilterProducts(sortedProducts);
     setSortConfig({ key, direction });
+  };
+
+  const handleClick = () => {
+    navigate(`/cart/${id}`);
   };
 
   return (
@@ -136,7 +144,7 @@ export const NavBar = ({ products, setFilterProducts }: NavBarProps) => {
                   </span>
                   <ul className="dropdown-menu dropdown-menu-end">
                     <li>
-                      <a className="dropdown-item" href="/cart">
+                      <a className="dropdown-item" onClick={() => {handleClick();}}>
                         Kosár
                       </a>
                     </li>

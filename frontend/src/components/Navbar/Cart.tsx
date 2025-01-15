@@ -1,38 +1,46 @@
 import { useEffect, useState } from "react";
 import { Product } from "../../lib/types";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCart } from "../../lib/CartContext";
-import { useAuth } from "../../lib/AuthContext";
 
 export default function Card() {
-    const [product, setProduct] = useState<Product | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [product, setProduct] = useState<Product>();
+    const [loading, setLoading] = useState<boolean>();
     const [error, setError] = useState<string | null>(null);
-    const { addToCart } = useCart();
-    const { isLoggedIn } = useAuth();
     const { id } = useParams();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (id) {
-            fetch(`http://localhost:3000/products/${id}`)
-                .then((response) => response.json())
-                .then((data) => setProduct(data))
-                .catch((err) => setError(err.message))
-                .finally(() => setLoading(false));
-        }
-    }, [id]);
+    const fetchProduct = (id: number) => {
+        setLoading(true);
+        setError(null);
 
-    const handlePurchase = () => {
-        if (!product) return;
-        addToCart(product);
-        setProduct({ ...product, availability: false });
+        fetch(`http://localhost:3000/products/${id}`)
+            .then((response) => {
+                if (response.status === 404) {
+                    setError("A kért erőforrás nem található (404)!");
+                }
+                if (!response.ok) {
+                    setError(`Server responded with status ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setLoading(false);
+                setProduct(data);
+            })
+            .catch((error) => {
+                setError(error.message);
+            });
     };
+
+    useEffect(() => {
+        console.log("Route ID:", id);
+        if (id) fetchProduct(parseInt(id));
+    }, [id]);
 
     const handleExit = () => navigate("/kiiras");
 
-    if (loading) return <p>Loading...</p>;
     if (error) return <p>Hiba történt: {error}</p>;
+    if (loading) return <p>Loading...</p>;
 
     return (
         <main className="container p-1 bg-warning text-dark rounded">
@@ -59,25 +67,6 @@ export default function Card() {
                         <strong>{product?.seat}</strong>
                     </p>
                     <hr />
-                    <p
-                        className="fs-5 fw-bold"
-                        style={{
-                            color: product?.availability ? "green" : "red",
-                        }}
-                    >
-                        {product?.availability ? "Elérhető" : "Elfogyott"}
-                    </p>
-                    <div className="text-center mt-4">
-                        <button
-                            className={`btn ${
-                                product?.availability ? "btn-warning" : "btn-secondary"
-                            } px-4 py-2`}
-                            disabled={!product?.availability || !isLoggedIn}
-                            onClick={handlePurchase}
-                        >
-                            Vásárlás
-                        </button>
-                    </div>
                 </div>
             </div>
         </main>

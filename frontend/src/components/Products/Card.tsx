@@ -41,12 +41,27 @@ export default function Card() {
         if (id) fetchProduct(parseInt(id));
     }, [id]);
 
-    const handlePurchase = () => {
+    const handlePurchase = async () => {
         if (!product) return;
-        addToCart(product);
-        setProduct((prev) => prev && { ...prev, availability: false });
+    
+        try {
+            const response = await fetch(`http://localhost:3000/products/${id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ ...product, availability: false }),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Failed to update product availability`);
+            }
+    
+            const updatedProduct = await response.json();
+            setProduct(updatedProduct);
+        } catch (error) {
+            console.error("Error updating product:", error);
+        }
     };
-
+    
     const handleExit = () => {
         navigate(`/kiiras`);
     };

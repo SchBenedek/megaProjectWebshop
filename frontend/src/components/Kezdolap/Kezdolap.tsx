@@ -1,4 +1,4 @@
-import NavBar from "../Navbar/Navbar";
+import {NavBar} from "../Navbar/Navbar";
 import LoginForm from "../Profiles/LoginForm";
 import RegisterForm from "../Profiles/RegisterForm";
 import { useState } from "react";
@@ -86,7 +86,6 @@ export default function Kezdolap() {
         <>
             <NavBar
                 products={[]}
-                filterProducts={[]}
                 setFilterProducts={() => []}
                 searchTerm={""}
                 isLoggedIn={isLoggedIn}

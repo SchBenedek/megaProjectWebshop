@@ -11,9 +11,10 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Card from './components/Products/Card';
 import Kezdolap from './components/Kezdolap/Kezdolap';
 import Feltetelek from './components/Kezdolap/Feltetelek';
-import { AuthProvider } from './lib/AuthContext'; // Adjust the path as necessary
+import { AuthProvider } from './lib/AuthContext';
+import Cart from './components/Navbar/Cart';
+import { CartProvider } from "./lib/CartContext";
 
-// Define the router with routes
 const router = createBrowserRouter([
   {
     path: "/",
@@ -31,12 +32,18 @@ const router = createBrowserRouter([
     path: "/feltetelek",
     element: <Feltetelek />,
   },
+  {
+    path: "/cart",
+    element: <Cart />,
+  }
 ]);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>,
     </AuthProvider>
   </StrictMode>
 );
